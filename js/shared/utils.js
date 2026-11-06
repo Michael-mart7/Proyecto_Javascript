@@ -1,4 +1,4 @@
-
+ 
 import { TASK_ORIGIN } from './constants.js';
 
 // Generar identificador único

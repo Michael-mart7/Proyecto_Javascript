@@ -1,0 +1,49 @@
+
+/* Variables compartidas del proyecto */
+:root {
+    --color-primario: #5369DF;
+    --color-exito: #16a34a;
+    --color-peligro: #dc6262;
+
+    --color-fondo: #F5F7FA;
+    --color-superficie: #FFFFFF;
+    --color-texto: #293141;
+    --color-secundario: #78869B;
+    --color-borde: #DCE2EA;
+
+    --radio: 10px;
+    --espacio: 1rem;
+}
+
+/* Configuración general */
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    min-height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+
+    font-family: Arial, sans-serif;
+
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+}
+
+/* El componente principal ocupará el espacio disponible */
+task-app {
+    display: block;
+    min-height: 100vh;
+}
+
+/* Mensaje provisional mientras desarrollamos la aplicación */
+.mensaje-inicial {
+    padding: 30px;
+    text-align: center;
+    color: var(--color-secundario);
+}

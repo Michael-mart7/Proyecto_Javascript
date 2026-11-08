@@ -5,6 +5,7 @@ import { generateId } from './shared/utils.js';
 import { getApiTasks } from './services/apiService.js';
 import { mapSelectedApiTasks } from './services/importService.js';
 import './components/task-app.js';
+import './components/task-import-modal.js';
 
 console.log('Gestor de tareas iniciado correctamente');
 console.log('API configurada:', API_URL);

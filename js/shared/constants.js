@@ -27,5 +27,6 @@ export const EVENTS = {
     COMPLETE_ALL: 'task:complete-all',
     IMPORT: 'task:import',
     FILTER: 'task:filter',
-    SEARCH: 'task:search'
+    SEARCH: 'task:search',
+    IMPORT_SELECTED: 'import-selected'
 };

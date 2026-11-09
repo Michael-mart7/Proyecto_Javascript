@@ -182,16 +182,31 @@ class TaskApp extends HTMLElement {
     }
 
     // Recibir las tareas que se mostrarán en la lista
-    setTasks(tasks) {
+    setTasks(tasks, filtered = false) {
 
-        this._tasks = Array.isArray(tasks) ? tasks : [];
+    this._tasks = Array.isArray(tasks) ? tasks : [];
 
-        const lista = this.shadowRoot.querySelector('task-list');
+    const lista = this.shadowRoot.querySelector('task-list');
 
-        if (lista) {
-            lista.tasks = this._tasks;
+    if (lista) {
+        lista.filtered = filtered;
+        lista.tasks = this._tasks;
+    }
+}
+// Actualizar los controles de búsqueda y filtro
+    setSearchAndFilter(query, status) {
+
+        this._currentSearch = query;
+        this._currentFilter = status;
+        clearTimeout(this._searchTimeout);
+        const searchInput = this.shadowRoot.querySelector('#searchInput');
+        const filterSelect = this.shadowRoot.querySelector('#filterSelect');
+        if (searchInput) {
+            searchInput.value = query;
         }
-
+        if (filterSelect) {
+            filterSelect.value = status;
+        }
     }
 
     // Recibir todas las tareas para calcular el progreso

@@ -1,0 +1,112 @@
+/* Estilos internos de <task-list>. Viven dentro del Shadow DOM. */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box; /* global.css no atraviesa el Shadow DOM */
+}
+
+:host {
+    display: block;
+    --suave: #566175; /* gris con contraste suficiente (4.5:1) sobre blanco */
+}
+
+[hidden] {
+    display: none !important;
+}
+
+/* Cabecera de columnas: mismas columnas que task-item.css */
+.cabecera {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 150px 150px 130px 170px;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 0 1.5rem;
+    background: var(--color-superficie, #ffffff);
+    border-bottom: 1px solid var(--color-borde, #dce2ea);
+    color: var(--suave);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.cabecera .der {
+    text-align: right;
+}
+
+/* Estados vacíos */
+.vacio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 4rem 1.5rem;
+    text-align: center;
+    background: var(--color-superficie, #ffffff);
+    color: var(--color-texto, #293141);
+}
+
+.icono-caja {
+    display: grid;
+    place-items: center;
+    width: 72px;
+    height: 72px;
+    border-radius: 18px;
+    background: #eef1fd;
+    color: var(--color-primario, #5369df);
+}
+
+.vacio h2 {
+    margin: 0.5rem 0 0;
+    font-size: 1.3rem;
+}
+
+.vacio p {
+    max-width: 480px;
+    margin: 0;
+    color: var(--suave);
+    line-height: 1.5;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 0 1.2rem;
+    margin-top: 0.5rem;
+    border-radius: var(--radio, 10px);
+    font: inherit;
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+
+.btn.principal {
+    border: 1px solid var(--color-primario, #5369df);
+    background: var(--color-primario, #5369df);
+    color: #ffffff;
+}
+
+.btn.secundario {
+    border: 1px solid var(--color-borde, #dce2ea);
+    background: var(--color-superficie, #ffffff);
+    color: var(--color-texto, #293141);
+}
+
+.btn:focus-visible {
+    outline: 2px solid var(--color-primario, #5369df);
+    outline-offset: 2px;
+}
+
+/* Móvil: sin cabecera de columnas */
+@media (max-width: 720px) {
+    .cabecera {
+        display: none;
+    }
+
+    .vacio {
+        padding: 2.5rem 1rem;
+    }
+}

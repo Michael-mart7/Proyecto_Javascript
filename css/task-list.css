@@ -99,14 +99,22 @@
     outline: 2px solid var(--color-primario, #5369df);
     outline-offset: 2px;
 }
+/* Tablet y móvil: presentación mediante tarjetas */
+@media (max-width: 900px) {
 
-/* Móvil: sin cabecera de columnas */
-@media (max-width: 720px) {
     .cabecera {
         display: none;
+    }
+
+    .filas {
+        background: var(--color-superficie, #ffffff);
+        border: 1px solid var(--color-borde, #dce2ea);
+        border-radius: 12px;
+        overflow: hidden;
     }
 
     .vacio {
         padding: 2.5rem 1rem;
     }
+
 }

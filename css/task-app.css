@@ -179,55 +179,109 @@ select:focus-visible {
 }
 
 /* Diseño responsive */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
 
     .app-container {
         width: 94%;
-        padding: 25px 0;
+        max-width: 760px;
+        padding: 28px 0;
     }
 
+    /* Encabezado */
     .header {
         flex-direction: column;
         align-items: flex-start;
-        gap: 20px;
+        gap: 16px;
+        margin-bottom: 25px;
     }
 
     .header h1 {
-        font-size: 28px;
+        font-size: 30px;
     }
 
+    .header p {
+        margin-top: 8px;
+    }
+
+    /* Barra de progreso */
     .progress-container {
         width: 100%;
     }
 
+    /* Controles: búsqueda arriba y tres botones debajo */
     .toolbar {
-        flex-direction: column;
-        align-items: stretch;
+        display: grid;
+        grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.35fr) minmax(0, 1fr);
+        gap: 10px;
+        margin-bottom: 18px;
     }
 
-    #searchInput,
+    #searchInput {
+        grid-column: 1 / -1;
+        width: 100%;
+        min-width: 0;
+    }
+
     #filterSelect {
         width: 100%;
+        min-width: 0;
     }
 
     .toolbar button {
         width: 100%;
+        padding: 12px 8px;
+        font-size: 13px;
     }
 
+    /* Acciones generales */
     .list-actions {
         justify-content: space-between;
         gap: 8px;
+        margin-bottom: 14px;
     }
 }
 
+/* Teléfonos pequeños */
 @media (max-width: 380px) {
 
-    .header h1 {
-        font-size: 24px;
+    .app-container {
+        width: calc(100% - 24px);
+        padding: 22px 0;
     }
 
-    button {
+    .header h1 {
+        font-size: 25px;
+    }
+
+    /* Dos columnas para evitar que los botones se compriman */
+    .toolbar {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    #searchInput {
+        grid-column: 1 / -1;
+    }
+
+    #filterSelect {
+        grid-column: 1;
+    }
+
+    #btnNueva {
+        grid-column: 2;
+    }
+
+    #btnImportar {
+        grid-column: 1 / -1;
+    }
+
+    .toolbar button {
         font-size: 13px;
-        padding: 12px;
+        padding: 11px 6px;
+    }
+
+    .list-actions button {
+        font-size: 13px;
+        padding: 10px 8px;
     }
 }

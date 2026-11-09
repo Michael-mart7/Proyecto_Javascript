@@ -138,19 +138,97 @@
     outline-offset: 2px;
 }
 
-/* Móvil: una columna, sin desbordamiento horizontal */
-@media (max-width: 720px) {
+/* Tablet y móvil: cada tarea se muestra como una tarjeta */
+@media (max-width: 900px) {
+
     .fila {
-        grid-template-columns: 1fr;
-        gap: 0.4rem;
-        padding: 1rem;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-areas:
+            "tarea tarea"
+            "fecha estado"
+            "origen acciones";
+        gap: 12px;
+        min-height: 0;
+        padding: 16px;
+    }
+
+    /* Título y checkbox */
+    .tarea {
+        grid-area: tarea;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .titulo {
+        min-width: 0;
+        overflow-wrap: break-word;
+        word-break: normal;
+        line-height: 1.4;
+    }
+
+    /* Fecha */
+    .fecha {
+        grid-area: fecha;
+        font-size: 0.82rem;
     }
 
     .fecha::before {
-        content: 'Registrada: ';
+        content: "Fecha: ";
+        color: var(--suave);
+        white-space: nowrap;
     }
 
-    .acciones {
-        justify-content: flex-start;
+    /* Estado */
+    .estado {
+        grid-area: estado;
+        justify-self: end;
     }
+
+    /* Origen */
+    .origen {
+        grid-area: origen;
+        font-size: 0.82rem;
+    }
+
+    /* Acciones */
+    .acciones {
+        grid-area: acciones;
+        justify-content: flex-end;
+        gap: 8px;
+    }
+
+    /* Botones únicamente con iconos */
+    .btn {
+        width: 40px;
+        height: 40px;
+        min-height: 40px;
+        justify-content: center;
+        padding: 0;
+        font-size: 0;
+        border-radius: 8px;
+    }
+
+    .btn .icono {
+        width: 18px;
+        height: 18px;
+    }
+
+    .editar {
+        background-color: #eef1fd;
+        color: var(--color-primario, #5369df);
+    }
+
+    .eliminar {
+        border: none;
+        border-radius: 8px;
+        background-color: #fee2e2;
+        color: #dc2626;
+    }
+
+    /* No mostrar edición para tareas importadas */
+    .editar:disabled {
+        display: none;
+    }
+
 }

@@ -1,47 +1,50 @@
 
-import { API_URL } from './shared/constants.js';
-import { generateId } from './shared/utils.js';
+import { API_URL, EVENTS, API_STATUS } from './shared/constants.js';
+
+import './components/task-import-modal.js';
+import './components/task-app.js';
 
 import { getApiTasks } from './services/apiService.js';
-import { mapSelectedApiTasks } from './services/importService.js';
-import './components/task-app.js';
-import './components/task-import-modal.js';
 
-console.log('Gestor de tareas iniciado correctamente');
-console.log('API configurada:', API_URL);
-console.log('Generador de IDs disponible:', typeof generateId === 'function');
+const app = document.querySelector('task-app');
 
-// Probar consulta y transformación de tareas
-async function probarImportacion() {
+let apiTasks = [];
 
-    console.log('Consultando tareas de JSONPlaceholder...');
+// Consultar el banco de tareas
+async function loadApiTasks() {
+    app.setApiStatus(API_STATUS.LOADING, 'Consultando tareas...');
 
-    // Obtener tareas de la API
     const resultado = await getApiTasks();
 
     if (resultado.ok) {
+        apiTasks = resultado.data;
 
-        console.log('Tareas obtenidas correctamente:', resultado.data.length);
+        app.setApiTasks(apiTasks);
+        app.setImportedIds([]);
 
-        // Seleccionar las primeras tres tareas como ejemplo
-        const tareasSeleccionadas = resultado.data.slice(0, 3);
+        app.showMessage('Banco de tareas cargado correctamente.', 'success');
 
-        // Transformar las tareas seleccionadas
-        const tareasNormalizadas = mapSelectedApiTasks(tareasSeleccionadas);
-
-        // Mostrar los resultados
-        console.log('Tareas originales:', tareasSeleccionadas);
-
-        console.log('Tareas normalizadas:', tareasNormalizadas);
-
-        console.log('Cantidad de tareas transformadas:', tareasNormalizadas.length);
-
+        console.log('Tareas disponibles:', apiTasks.length);
     } else {
+        app.setApiStatus(API_STATUS.ERROR, resultado.message);
+        app.showMessage('No se pudieron cargar las tareas.', 'error');
 
-        console.error('Error al consultar la API:', resultado.message);
-
+        console.error(resultado.message);
     }
 }
 
-// Ejecutar la prueba
-probarImportacion();
+// Recibir los IDs seleccionados desde el modal
+app.addEventListener(EVENTS.IMPORT, function (event) {
+    console.log('IDs seleccionados para importar:', event.detail.sourceIds);
+});
+
+// Permitir volver a consultar la API
+app.addEventListener(EVENTS.API_RETRY, function () {
+    loadApiTasks();
+});
+
+// Iniciar la aplicación
+console.log('Gestor de tareas iniciado.');
+console.log('API configurada:', API_URL);
+
+loadApiTasks();

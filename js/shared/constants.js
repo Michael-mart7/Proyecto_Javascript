@@ -28,5 +28,5 @@ export const EVENTS = {
     IMPORT: 'task:import',
     FILTER: 'task:filter',
     SEARCH: 'task:search',
-    IMPORT_SELECTED: 'import-selected'
+    API_RETRY: 'task:api-retry'
 };

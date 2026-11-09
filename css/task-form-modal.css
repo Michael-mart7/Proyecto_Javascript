@@ -1,0 +1,205 @@
+/* Estilos internos de <task-form-modal>. Viven dentro del Shadow DOM. */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box; /* global.css no atraviesa el Shadow DOM */
+}
+
+:host {
+    --suave: #566175; /* gris con contraste suficiente (4.5:1) sobre blanco */
+}
+
+[hidden] {
+    display: none !important;
+}
+
+dialog {
+    width: min(520px, calc(100vw - 2rem));
+    padding: 0;
+    border: 0;
+    border-radius: var(--radio, 10px);
+    background: var(--color-superficie, #ffffff);
+    color: var(--color-texto, #293141);
+    box-shadow: 0 20px 50px rgba(41, 49, 65, 0.25);
+    font-family: inherit;
+}
+
+dialog::backdrop {
+    background: rgba(41, 49, 65, 0.5);
+}
+
+form {
+    display: block;
+}
+
+.encabezado {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.5rem 1.5rem 0;
+}
+
+h2 {
+    margin: 0;
+    font-size: 1.4rem;
+}
+
+.subtitulo {
+    margin: 0.3rem 0 0;
+    color: var(--suave);
+    font-size: 0.9rem;
+}
+
+.cerrar {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    margin: -0.5rem -0.5rem 0 0;
+    border: 0;
+    border-radius: var(--radio, 10px);
+    background: none;
+    color: var(--suave);
+    cursor: pointer;
+}
+
+/* Campos */
+.campo {
+    margin: 0;
+    padding: 1.1rem 1.5rem 0;
+}
+
+label,
+.etiqueta {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-size: 0.9rem;
+}
+
+input[type='text'] {
+    width: 100%;
+    min-height: 48px;
+    padding: 0 0.9rem;
+    border: 1px solid var(--color-borde, #dce2ea);
+    border-radius: var(--radio, 10px);
+    background: var(--color-superficie, #ffffff);
+    color: inherit;
+    font: inherit;
+}
+
+input[type='text']:focus {
+    border-color: var(--color-primario, #5369df);
+    outline: 2px solid var(--color-primario, #5369df);
+    outline-offset: 0;
+}
+
+input[aria-invalid='true'] {
+    border-color: #b91c1c;
+}
+
+.error {
+    margin: 0.4rem 0 0;
+    color: #b91c1c;
+    font-size: 0.85rem;
+}
+
+.ayuda {
+    margin: 0.4rem 0 0;
+    color: var(--suave);
+    font-size: 0.8rem;
+}
+
+/* Fecha de solo lectura con icono */
+.con-icono {
+    position: relative;
+}
+
+.con-icono input {
+    background: var(--color-fondo, #f5f7fa);
+    color: var(--suave);
+    cursor: default;
+    padding-right: 2.6rem;
+}
+
+.con-icono svg {
+    position: absolute;
+    top: 50%;
+    right: 0.9rem;
+    transform: translateY(-50%);
+    color: var(--suave);
+    pointer-events: none;
+}
+
+/* Checkbox de estado */
+.opcion {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 44px;
+    margin: 0;
+    cursor: pointer;
+}
+
+.opcion input {
+    width: 22px;
+    height: 22px;
+    margin: 0;
+    accent-color: var(--color-primario, #5369df);
+}
+
+.nota {
+    margin: 0.6rem 1.5rem 1.2rem;
+    color: var(--suave);
+    font-size: 0.85rem;
+}
+
+/* Pie con botones */
+.pie {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--color-borde, #dce2ea);
+}
+
+.boton {
+    min-height: 44px;
+    padding: 0 1.3rem;
+    border-radius: var(--radio, 10px);
+    font: inherit;
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+
+.cancelar {
+    border: 1px solid var(--color-borde, #dce2ea);
+    background: var(--color-superficie, #ffffff);
+    color: var(--color-texto, #293141);
+}
+
+.guardar {
+    border: 1px solid var(--color-primario, #5369df);
+    background: var(--color-primario, #5369df);
+    color: #ffffff;
+}
+
+/* Foco visible */
+.boton:focus-visible,
+.cerrar:focus-visible,
+.opcion input:focus-visible {
+    outline: 2px solid var(--color-primario, #5369df);
+    outline-offset: 2px;
+}
+
+/* Móvil: los botones se apilan */
+@media (max-width: 480px) {
+    .pie {
+        flex-direction: column-reverse;
+    }
+
+    .boton {
+        width: 100%;
+    }
+}

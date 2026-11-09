@@ -1,0 +1,156 @@
+/* Estilos internos de <task-item>. Viven dentro del Shadow DOM. */
+/* Las columnas deben ser IGUALES a las de la cabecera en task-list.css */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box; /* global.css no atraviesa el Shadow DOM */
+}
+
+:host {
+    display: block;
+    --suave: #566175; /* gris con contraste suficiente (4.5:1) sobre blanco */
+}
+
+:host(:last-child) .fila {
+    border-bottom: 0;
+}
+
+.fila {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 150px 150px 130px 170px;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 72px;
+    padding: 0 1.5rem;
+    background: var(--color-superficie, #ffffff);
+    color: var(--color-texto, #293141);
+    border-bottom: 1px solid var(--color-borde, #dce2ea);
+    font-size: 0.95rem;
+}
+
+.celda {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 0;
+}
+
+.tarea {
+    gap: 1rem;
+}
+
+.titulo {
+    overflow-wrap: anywhere;
+}
+
+.completada .titulo {
+    text-decoration: line-through;
+    color: var(--suave);
+}
+
+.check {
+    flex: none;
+    width: 22px;
+    height: 22px;
+    margin: 0;
+    accent-color: var(--color-primario, #5369df);
+    cursor: pointer;
+}
+
+.check:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.fecha,
+.origen {
+    color: var(--suave);
+}
+
+.icono {
+    flex: none;
+}
+
+/* Estado */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.2rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+}
+
+.badge.pendiente {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.badge.ok {
+    background: #dcfce7;
+    color: #166534;
+}
+
+/* Acciones */
+.acciones {
+    justify-content: flex-end;
+    gap: 0;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-height: 44px;
+    padding: 0 0.6rem;
+    border: 0;
+    background: none;
+    font: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border-radius: var(--radio, 10px);
+}
+
+.editar {
+    color: var(--color-primario, #5369df);
+}
+
+.eliminar {
+    color: var(--suave);
+    border-left: 1px solid var(--color-borde, #dce2ea);
+    border-radius: 0 var(--radio, 10px) var(--radio, 10px) 0;
+}
+
+.eliminar:hover {
+    color: #b91c1c;
+}
+
+.btn:disabled {
+    color: #98a2b3;
+    cursor: not-allowed;
+}
+
+/* Foco visible en todo lo interactivo */
+.check:focus-visible,
+.btn:focus-visible {
+    outline: 2px solid var(--color-primario, #5369df);
+    outline-offset: 2px;
+}
+
+/* Móvil: una columna, sin desbordamiento horizontal */
+@media (max-width: 720px) {
+    .fila {
+        grid-template-columns: 1fr;
+        gap: 0.4rem;
+        padding: 1rem;
+    }
+
+    .fecha::before {
+        content: 'Registrada: ';
+    }
+
+    .acciones {
+        justify-content: flex-start;
+    }
+}

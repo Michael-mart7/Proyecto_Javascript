@@ -10,6 +10,7 @@ const CSS_URL = new URL('../../css/task-item.css', import.meta.url).href;
 // Iconos simples en SVG (solo dibujo, sin datos del usuario)
 const ICONS = {
     edit: '<path d="M17 3a2.83 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>',
+    eye: '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>',
     trash: '<polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>',
     lock: '<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
     monitor: '<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>',
@@ -85,10 +86,15 @@ class TaskItem extends HTMLElement {
                     ${icon(isApi ? 'cloud' : 'monitor')}
                     <span>${isApi ? 'API' : 'Local'}</span>
                 </div>
-                <div class="celda acciones">
+               <div class="celda acciones">
+                    <button type="button" class="btn ver" data-accion="detalle">
+                        ${icon('eye')}Ver
+                    </button>
+
                     <button type="button" class="btn editar" data-accion="editar" ${isApi ? 'disabled' : ''}>
                         ${icon(isApi ? 'lock' : 'edit')}Editar
                     </button>
+
                     <button type="button" class="btn eliminar" data-accion="eliminar">
                         ${icon('trash')}Eliminar
                     </button>
@@ -102,10 +108,12 @@ class TaskItem extends HTMLElement {
 
         // Etiquetas accesibles descriptivas
         const checkbox = root.querySelector('.check');
+        const detailButton = root.querySelector('.ver');
         const editButton = root.querySelector('.editar');
         const deleteButton = root.querySelector('.eliminar');
         checkbox.setAttribute('aria-label', `Marcar como completada: ${task.title}`);
         deleteButton.setAttribute('aria-label', `Eliminar tarea: ${task.title}`);
+        detailButton.setAttribute('aria-label', `Ver detalles de tarea: ${task.title}`);
         editButton.setAttribute(
             'aria-label',
             isApi ? 'Editar no disponible: tarea importada' : `Editar tarea: ${task.title}`
@@ -118,6 +126,7 @@ class TaskItem extends HTMLElement {
         // Eventos hacia el controlador (bubbles + composed para salir del Shadow DOM)
         checkbox.addEventListener('change', () => this.emit(EVENTS.TOGGLE, { id: task.id }));
         editButton.addEventListener('click', () => this.emit(EVENTS.EDIT, { id: task.id }));
+        detailButton.addEventListener('click', () => this.emit(EVENTS.DETAIL, { id: task.id }));
         deleteButton.addEventListener('click', () => {
             // Ninguna acción destructiva sin aviso
             if (window.confirm(`¿Eliminar la tarea "${task.title}"?`)) {

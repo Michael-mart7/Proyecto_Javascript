@@ -18,8 +18,7 @@
 /* Cabecera de columnas: mismas columnas que task-item.css */
 .cabecera {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 150px 150px 130px 170px;
-    align-items: center;
+    grid-template-columns: minmax(0, 1fr) 150px 150px 130px 220px;    align-items: center;
     gap: 0.5rem;
     min-height: 44px;
     padding: 0 1.5rem;

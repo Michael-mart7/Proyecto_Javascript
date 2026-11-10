@@ -96,6 +96,8 @@ class TaskApp extends HTMLElement {
 
                 <task-form-modal></task-form-modal>
 
+                <task-detail-modal></task-detail-modal>
+
                 <task-import-modal></task-import-modal>
 
             </main>
@@ -303,6 +305,16 @@ class TaskApp extends HTMLElement {
     openForm(task = null) {
 
         const modal = this.shadowRoot.querySelector('task-form-modal');
+
+        if (modal && typeof modal.open === 'function') {
+            modal.open(task);
+        }
+
+    }
+    // Abrir los detalles de una tarea
+    openDetail(task) {
+
+        const modal = this.shadowRoot.querySelector('task-detail-modal');
 
         if (modal && typeof modal.open === 'function') {
             modal.open(task);

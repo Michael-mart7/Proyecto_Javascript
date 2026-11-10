@@ -21,6 +21,7 @@ export const API_STATUS = {
 export const EVENTS = {
     SAVE: 'task:save',
     EDIT: 'task:edit',
+    DETAIL: 'task:detail',
     TOGGLE: 'task:toggle',
     DELETE: 'task:delete',
     CLEAR: 'task:clear',

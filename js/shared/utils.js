@@ -1,4 +1,3 @@
- 
 import { TASK_ORIGIN } from './constants.js';
 
 // Generar identificador único
@@ -12,10 +11,11 @@ export function generateId() {
 }
 
 // Crear tarea local
-export function createLocalTask({ title, completed = false }) {
+export function createLocalTask({ title, description = '', completed = false }) {
     return {
         id: generateId(),
         title: title.trim(),
+        description: description.trim(),
         createdAt: new Date().toISOString(),
         completed: completed,
         origin: TASK_ORIGIN.LOCAL,
@@ -28,6 +28,7 @@ export function createImportedTask(apiTask) {
     return {
         id: generateId(),
         title: apiTask.title,
+        description: '',
         createdAt: new Date().toISOString(),
         completed: apiTask.completed,
         origin: TASK_ORIGIN.API,

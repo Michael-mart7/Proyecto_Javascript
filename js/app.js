@@ -13,6 +13,7 @@ import './components/task-list.js';
 import './components/task-form-modal.js';
 import './components/task-import-modal.js';
 import './components/task-app.js';
+import './components/task-detail-modal.js';
 
 // Importar servicios
 import {
@@ -120,9 +121,10 @@ async function loadApiTasks() {
 }
 
 // Crear o actualizar una tarea
+// Crear o actualizar una tarea
 app.addEventListener(EVENTS.SAVE, function (event) {
 
-    const { id, title, completed } = event.detail;
+    const { id, title, description, completed } = event.detail;
 
     let resultado;
 
@@ -130,6 +132,7 @@ app.addEventListener(EVENTS.SAVE, function (event) {
 
         resultado = addTask({
             title: title,
+            description: description,
             completed: completed
         });
 
@@ -139,6 +142,7 @@ app.addEventListener(EVENTS.SAVE, function (event) {
 
         resultado = updateTask(id, {
             title: title,
+            description: description,
             completed: completed
         });
 
@@ -148,6 +152,23 @@ app.addEventListener(EVENTS.SAVE, function (event) {
 
 });
 
+// Abrir los detalles de una tarea
+app.addEventListener(EVENTS.DETAIL, function (event) {
+
+    const id = event.detail.id;
+
+    const task = getTasks().find(function (item) {
+        return item.id === id;
+    });
+
+    if (!task) {
+        app.showMessage('No se encontró la tarea.', 'error');
+        return;
+    }
+
+    app.openDetail(task);
+
+});
 // Abrir el formulario para crear o editar
 app.addEventListener(EVENTS.EDIT, function (event) {
 

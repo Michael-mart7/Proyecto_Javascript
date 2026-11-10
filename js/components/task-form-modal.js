@@ -1,6 +1,6 @@
 // Componente <task-form-modal>: formulario para crear o editar una tarea.
 // Método público: modal.open(task)  -> task = objeto para editar, o null/undefined para una tarea nueva
-// Emite: task:save con { id: null | string, title, completed }
+// Emite: task:save con { id: null | string, title, description, completed }
 // No guarda nada: solo avisa. El controlador llama a addTask() o updateTask().
 
 import { EVENTS, TASK_ORIGIN } from '../shared/constants.js';
@@ -57,6 +57,17 @@ class TaskFormModal extends HTMLElement {
                         <input type="text" id="titulo" name="titulo" maxlength="120" autocomplete="off"
                             placeholder="Ej.: Preparar el proyecto final">
                         <p class="error" id="error-titulo" hidden></p>
+                    </div>
+
+                    <div class="campo">
+                        <label for="descripcion">Descripción</label>
+                        <textarea
+                            id="descripcion"
+                            name="descripcion"
+                            maxlength="1000"
+                            rows="4"
+                            placeholder="Agrega información sobre esta tarea..."></textarea>
+                        <p class="ayuda">Describe brevemente qué debes realizar (máximo 1000 caracteres).</p>
                     </div>
 
                     <div class="campo">
@@ -132,6 +143,7 @@ class TaskFormModal extends HTMLElement {
             ? 'Actualiza los datos de tu tarea.'
             : 'Un paso más hacia lo que importa.';
         root.getElementById('titulo').value = task ? task.title : '';
+        root.getElementById('descripcion').value = task ? (task.description || '') : '';
         root.getElementById('completada').checked = task ? task.completed : false;
         root.getElementById('fecha').value = formatDate(task ? task.createdAt : new Date().toISOString());
         this.showError('');
@@ -161,6 +173,7 @@ class TaskFormModal extends HTMLElement {
         const root = this.shadowRoot;
         const input = root.getElementById('titulo');
         const title = input.value.trim();
+        const description = root.getElementById('descripcion').value.trim();
 
         if (!title) {
             this.showError('El título no puede estar vacío.');
@@ -173,6 +186,7 @@ class TaskFormModal extends HTMLElement {
                 detail: {
                     id: this._task ? this._task.id : null,
                     title,
+                    description,
                     completed: root.getElementById('completada').checked
                 },
                 bubbles: true,

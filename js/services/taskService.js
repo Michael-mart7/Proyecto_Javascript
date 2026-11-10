@@ -17,6 +17,7 @@ function isValidTask(t) {
         typeof t === 'object' &&
         typeof t.id === 'string' &&
         typeof t.title === 'string' &&
+        (typeof t.description === 'undefined' || typeof t.description === 'string') &&
         typeof t.createdAt === 'string' &&
         typeof t.completed === 'boolean' &&
         (t.origin === TASK_ORIGIN.LOCAL || t.origin === TASK_ORIGIN.API) &&
@@ -56,7 +57,10 @@ export function loadTasks() {
         }
         const parsed = JSON.parse(saved);
         if (!Array.isArray(parsed)) throw new Error('Formato inválido');
-        tasks = parsed.filter(isValidTask);
+        tasks = parsed.filter(isValidTask).map((task) => ({
+            ...task,
+            description: typeof task.description === 'string' ? task.description : ''
+        }));
         return { ok: true, data: getTasks() };
     } catch (error) {
         // JSON dañado o localStorage no disponible: se empieza vacío
@@ -75,18 +79,27 @@ export function getTasks() {
 function cleanTitle(title) {
     return typeof title === 'string' ? title.trim() : '';
 }
+function cleanDescription(description) {
+    return typeof description === 'string' ? description.trim() : '';
+}
 
-export function addTask({ title, completed } = {}) {
+export function addTask({ title, description = '', completed } = {}) {
     const clean = cleanTitle(title);
     if (!clean) return { ok: false, message: 'El título no puede estar vacío.' };
 
-    const task = createLocalTask({ title: clean, completed: Boolean(completed) });
+    const task = createLocalTask({
+        title: clean,
+        description: cleanDescription(description),
+        completed: Boolean(completed)
+    });
+
     return commit([...tasks, task], { ok: true, data: { ...task } });
 }
 
-export function updateTask(id, { title, completed } = {}) {
+export function updateTask(id, { title, description, completed } = {}) {
     const current = tasks.find((t) => t.id === id);
     if (!current) return { ok: false, message: 'La tarea no existe.' };
+
     if (current.origin === TASK_ORIGIN.API) {
         return { ok: false, message: 'Las tareas importadas no se pueden editar.' };
     }
@@ -94,8 +107,18 @@ export function updateTask(id, { title, completed } = {}) {
     const clean = cleanTitle(title);
     if (!clean) return { ok: false, message: 'El título no puede estar vacío.' };
 
+    const cleanDesc = cleanDescription(
+        description === undefined ? current.description : description
+    );
+
     // createdAt, origin y sourceId se conservan al editar
-    const updated = { ...current, title: clean, completed: Boolean(completed) };
+    const updated = {
+        ...current,
+        title: clean,
+        description: cleanDesc,
+        completed: Boolean(completed)
+    };
+
     return commit(
         tasks.map((t) => (t.id === id ? updated : t)),
         { ok: true, data: { ...updated } }

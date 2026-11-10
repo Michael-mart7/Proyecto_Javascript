@@ -18,8 +18,7 @@
 
 .fila {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 150px 150px 130px 170px;
-    align-items: center;
+    grid-template-columns: minmax(0, 1fr) 150px 150px 130px 220px;    align-items: center;
     gap: 0.5rem;
     min-height: 72px;
     padding: 0 1.5rem;
@@ -98,6 +97,10 @@
     gap: 0;
 }
 
+.acciones .btn {
+    white-space: nowrap;
+}
+
 .btn {
     display: inline-flex;
     align-items: center;
@@ -114,6 +117,9 @@
 
 .editar {
     color: var(--color-primario, #5369df);
+}
+.ver {
+    color: #0369a1;
 }
 
 .eliminar {
@@ -218,6 +224,11 @@
         background-color: #eef1fd;
         color: var(--color-primario, #5369df);
     }
+
+    .ver {
+    background-color: #e0f2fe;
+    color: #0369a1;
+}
 
     .eliminar {
         border: none;

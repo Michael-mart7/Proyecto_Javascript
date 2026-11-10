@@ -1,6 +1,6 @@
 # Gestor de tareas
 
-Aplicación web para crear, organizar y consultar tareas, desarrollada con **HTML5, CSS3 y JavaScript puro**, sin frameworks ni dependencias externas. Utiliza **Web Components**, **Shadow DOM** y **localStorage** para separar la interfaz, la lógica de negocio y la persistencia de los datos.
+Aplicación web para crear, organizar, consultar e importar tareas, desarrollada con **HTML5, CSS3 y JavaScript puro**, sin frameworks ni dependencias externas. Utiliza **Web Components**, **Shadow DOM** y **localStorage** para separar la interfaz, la lógica de negocio y la persistencia de los datos.
 
 Además de administrar tareas locales, permite consultar e importar tareas desde la API pública [JSONPlaceholder](https://jsonplaceholder.typicode.com/todos).
 
@@ -49,8 +49,10 @@ No se utilizan frameworks, gestores de paquetes ni procesos de compilación.
 | Funcionalidad | Descripción |
 |---|---|
 | **Listado de tareas** | Muestra las tareas con título, fecha de registro, estado, origen y acciones disponibles. |
-| **Crear tareas** | Abre un formulario modal para registrar una tarea local. El título es obligatorio y el estado inicial puede seleccionarse. |
-| **Editar tareas** | Permite modificar el título y el estado de las tareas locales. La fecha de registro se conserva. |
+| **Crear tareas** | Abre un formulario modal para registrar una tarea local. El título es obligatorio y la descripción es opcional. También se puede establecer el estado inicial. |
+| **Descripción** | Permite agregar una descripción de hasta 1000 caracteres para explicar la tarea. |
+| **Editar tareas** | Permite modificar el título, la descripción y el estado de las tareas locales. La fecha de registro se conserva. |
+| **Consultar detalles** | El botón **Ver** abre una ventana con el título, la descripción, la fecha de registro, el estado y el origen de la tarea. Está disponible tanto para tareas locales como importadas. |
 | **Completar tareas** | Permite marcar una tarea local como completada o pendiente desde su casilla. |
 | **Marcar todas** | Completa las tareas locales que aún están pendientes. Las tareas importadas no se modifican. |
 | **Eliminar tareas** | Permite eliminar una tarea individual con confirmación. |
@@ -60,27 +62,31 @@ No se utilizan frameworks, gestores de paquetes ni procesos de compilación.
 | **Progreso** | Presenta el total de tareas completadas y su porcentaje respecto al total. |
 | **Importación desde API** | Consulta las tareas de JSONPlaceholder y permite seleccionar una o varias para agregarlas a la lista. |
 | **Control de duplicados** | Las tareas que ya fueron importadas se identifican y no pueden seleccionarse nuevamente. |
-| **Tareas importadas de solo lectura** | No se pueden editar ni cambiar de estado; sí se pueden eliminar. |
+| **Tareas importadas de solo lectura** | Se pueden consultar y eliminar, pero no editar ni cambiar de estado. |
 | **Persistencia** | Las tareas permanecen guardadas al recargar la página o volver a abrirla en el mismo navegador. |
+| **Compatibilidad con datos anteriores** | Las tareas que se guardaron antes de incorporar el campo de descripción se conservan y reciben una descripción vacía al cargarse. |
 | **Estados y mensajes** | La interfaz informa cuando la lista está vacía, una búsqueda no obtiene resultados o la consulta a la API falla. |
 
 ---
 
 ## Cómo usar la aplicación
 
-1. **Crear una tarea:** selecciona **Nueva tarea**, escribe el título y, si corresponde, marca la opción para crearla como completada. Después pulsa **Guardar tarea**.
-2. **Editar una tarea local:** utiliza el botón **Editar**, modifica el título o el estado y guarda los cambios. La fecha de registro original se conserva.
-3. **Completar o reabrir una tarea:** utiliza la casilla que aparece junto al título. Esta acción está disponible para tareas locales.
-4. **Eliminar una tarea:** pulsa **Eliminar** y confirma la operación.
-5. **Importar tareas:** pulsa **Importar**, espera a que se cargue el banco de tareas, busca o selecciona las tareas que necesites y pulsa **Importar seleccionadas**.
-6. **Seleccionar todas las disponibles:** utiliza la casilla de selección general del modal. La selección se aplica a las tareas visibles que todavía no se han importado.
-7. **Buscar y filtrar:** escribe en el campo de búsqueda o selecciona **Todas**, **Pendientes** o **Completadas** en el filtro.
-8. **Marcar todas:** utiliza esta acción para completar las tareas locales pendientes.
-9. **Vaciar lista:** pulsa **Vaciar lista** y confirma. Se eliminan las tareas locales y las importadas.
+1. **Crear una tarea:** selecciona **Nueva tarea**, escribe el título y, si lo necesitas, agrega una descripción. Puedes marcar la opción para crearla como completada. Después pulsa **Guardar tarea**.
+2. **Consultar detalles:** pulsa **Ver** en la fila de cualquier tarea para consultar su título, descripción, fecha, estado y origen.
+3. **Editar una tarea local:** utiliza el botón **Editar**, modifica el título, la descripción o el estado y guarda los cambios. La fecha de registro original se conserva.
+4. **Completar o reabrir una tarea:** utiliza la casilla que aparece junto al título. Esta acción está disponible para tareas locales.
+5. **Eliminar una tarea:** pulsa **Eliminar** y confirma la operación.
+6. **Importar tareas:** pulsa **Importar**, espera a que se cargue el banco de tareas, busca o selecciona las tareas que necesites y pulsa **Importar seleccionadas**.
+7. **Seleccionar todas las disponibles:** utiliza la casilla de selección general del modal. La selección se aplica a las tareas visibles que todavía no se han importado.
+8. **Buscar y filtrar:** escribe en el campo de búsqueda o selecciona **Todas**, **Pendientes** o **Completadas** en el filtro.
+9. **Marcar todas:** utiliza esta acción para completar las tareas locales pendientes.
+10. **Vaciar lista:** pulsa **Vaciar lista** y confirma. Se eliminan las tareas locales y las importadas.
 
 ### Reglas para las tareas importadas
 
-Las tareas importadas conservan el estado recibido desde la API. No se pueden editar ni cambiar entre pendientes y completadas. La interfaz deshabilita esas acciones y `taskService.js` también valida esta regla. La eliminación sí está permitida.
+Las tareas importadas conservan el estado recibido desde la API. No se pueden editar ni cambiar entre pendientes y completadas. La interfaz deshabilita esas acciones y `taskService.js` también valida esta regla. Sí se pueden consultar desde **Ver** y eliminar.
+
+JSONPlaceholder no proporciona un campo de descripción para sus tareas. Por eso, al consultar una tarea importada, la ventana de detalles muestra una nota que explica que la API no entrega una descripción.
 
 ---
 
@@ -140,6 +146,7 @@ Proyecto_Javascript/
 │   ├── task-list.css
 │   ├── task-item.css
 │   ├── task-form-modal.css
+│   ├── task-detail-modal.css
 │   └── task-import-modal.css
 ├── js/
 │   ├── app.js
@@ -156,6 +163,7 @@ Proyecto_Javascript/
 │       ├── task-list.js
 │       ├── task-item.js
 │       ├── task-form-modal.js
+│       ├── task-detail-modal.js
 │       └── task-import-modal.js
 └── wireframes/
     ├── escritorio.png
@@ -179,14 +187,15 @@ Proyecto_Javascript/
 | `js/app.js` | Controlador de la aplicación. Registra los componentes, escucha eventos y coordina los servicios. |
 | `js/shared/constants.js` | Define la clave de almacenamiento, la URL de la API, los estados, los orígenes y los nombres de eventos. |
 | `js/shared/utils.js` | Genera identificadores y crea objetos de tareas locales e importadas. |
-| `js/services/taskService.js` | Administra el arreglo de tareas, las operaciones CRUD, la importación y la persistencia. |
+| `js/services/taskService.js` | Administra el arreglo de tareas, las operaciones CRUD, la importación, la validación y la persistencia. |
 | `js/services/filterService.js` | Filtra las tareas por estado y realiza la búsqueda por título. |
 | `js/services/apiService.js` | Consulta la API de JSONPlaceholder y devuelve los datos o un mensaje de error. |
 | `js/services/importService.js` | Convierte las tareas seleccionadas de la API al formato interno de la aplicación. |
-| `js/components/task-app.js` | Construye la pantalla principal y expone métodos para actualizar la interfaz. |
+| `js/components/task-app.js` | Construye la pantalla principal y expone métodos para actualizar la interfaz y abrir los modales. |
 | `js/components/task-list.js` | Muestra la lista, sus encabezados y los estados vacíos. |
 | `js/components/task-item.js` | Representa una tarea y muestra las acciones permitidas según su origen. |
-| `js/components/task-form-modal.js` | Contiene el formulario modal para crear o editar tareas locales. |
+| `js/components/task-form-modal.js` | Contiene el formulario modal para crear o editar tareas locales, incluido el campo de descripción. |
+| `js/components/task-detail-modal.js` | Muestra en modo de consulta la información completa de una tarea. |
 | `js/components/task-import-modal.js` | Muestra el banco de tareas de la API y permite seleccionar las que se importarán. |
 | `css/` | Contiene los estilos generales y los estilos propios de cada componente. |
 | `wireframes/` | Guarda los wireframes y las evidencias del diseño inicial. |
@@ -221,17 +230,29 @@ Componentes Web
 
 ### Componentes web y Shadow DOM
 
-El proyecto utiliza cinco componentes personalizados:
+La aplicación utiliza seis componentes personalizados:
 
 | Componente | Responsabilidad |
 |---|---|
 | `<task-app>` | Contenedor principal, controles, progreso y mensajes. |
-| `<task-list>` | Lista de tareas y mensajes para listas vacías o búsquedas sin resultados. |
+| `<task-list>` | Lista de tareas, encabezados y mensajes para listas vacías. |
 | `<task-item>` | Información y acciones de una tarea individual. |
 | `<task-form-modal>` | Formulario para crear o editar tareas locales. |
+| `<task-detail-modal>` | Ventana de solo lectura para consultar los detalles de una tarea. |
 | `<task-import-modal>` | Selección de tareas disponibles en la API. |
 
 Cada componente extiende `HTMLElement`, crea su propio Shadow DOM con `attachShadow({ mode: 'open' })` y carga su hoja de estilos correspondiente. Esto permite encapsular la estructura y los estilos de los componentes.
+
+La estructura principal de componentes es la siguiente:
+
+```text
+<task-app>
+  ├── <task-list>
+  │     └── <task-item> (uno por tarea)
+  ├── <task-form-modal>
+  ├── <task-detail-modal>
+  └── <task-import-modal>
+```
 
 ### Comunicación mediante eventos
 
@@ -239,8 +260,9 @@ Los componentes emiten eventos `CustomEvent` con `bubbles: true` y `composed: tr
 
 | Evento | Información enviada | Acción del controlador |
 |---|---|---|
-| `task:save` | `{ id, title, completed }` | Crea o actualiza una tarea local. |
-| `task:edit` | `{ id }` | Abre el formulario vacío o con los datos de una tarea. |
+| `task:save` | `{ id, title, description, completed }` | Crea o actualiza una tarea local. |
+| `task:edit` | `{ id }` | Abre el formulario con los datos de la tarea o vacío si corresponde. |
+| `task:detail` | `{ id }` | Busca la tarea y abre la ventana de detalles. |
 | `task:toggle` | `{ id }` | Cambia el estado de una tarea local. |
 | `task:delete` | `{ id }` | Elimina la tarea indicada. |
 | `task:clear` | Sin datos adicionales | Solicita confirmación y vacía la lista. |
@@ -252,22 +274,10 @@ Los componentes emiten eventos `CustomEvent` con `bubbles: true` y `composed: tr
 
 ### Servicios
 
-**`taskService.js`** administra el estado de las tareas y ofrece las operaciones principales:
-
-- `loadTasks()` y `getTasks()` para recuperar y consultar las tareas.
-- `addTask()` y `updateTask()` para crear y editar tareas locales.
-- `toggleTask()` para cambiar el estado de una tarea local.
-- `deleteTask()` y `clearTasks()` para eliminar tareas.
-- `completeAll()` para completar las tareas locales pendientes.
-- `importTasks()` para incorporar las tareas previamente normalizadas y omitir duplicados.
-
-Las operaciones que modifican los datos devuelven un resultado con la propiedad `ok`. Cuando una operación no se puede realizar, el resultado incluye un mensaje. Si no se puede guardar en `localStorage`, el servicio revierte el cambio en memoria.
-
-**`filterService.js`** recibe la lista de tareas, el estado seleccionado y el texto de búsqueda. Devuelve una lista filtrada sin modificar los datos originales. La búsqueda por título ignora mayúsculas y tildes.
-
-**`apiService.js`** consulta la dirección de JSONPlaceholder definida en `constants.js`, comprueba que la respuesta HTTP sea correcta y verifica que el resultado sea un arreglo.
-
-**`importService.js`** convierte las tareas seleccionadas de la API al formato de la aplicación. El controlador coordina esta transformación con `taskService.js` para guardar las tareas.
+- **`taskService.js`** administra el arreglo de tareas y las operaciones de creación, edición, cambio de estado, eliminación, importación y persistencia. Las operaciones devuelven un objeto con `ok` para indicar si se realizaron correctamente.
+- **`filterService.js`** recibe las tareas, el estado seleccionado y el texto de búsqueda. Devuelve una lista filtrada sin modificar los datos originales. La búsqueda se realiza por título e ignora mayúsculas y tildes.
+- **`apiService.js`** consulta la dirección de JSONPlaceholder definida en `constants.js`, comprueba que la respuesta HTTP sea correcta y verifica que el resultado sea un arreglo.
+- **`importService.js`** convierte las tareas seleccionadas de la API al formato interno de la aplicación.
 
 ---
 
@@ -279,6 +289,7 @@ Todas las tareas utilizan la misma estructura, independientemente de si fueron c
 {
     id: "task-<identificador-unico>",
     title: "Estudiar JavaScript",
+    description: "Repasar arreglos y objetos",
     createdAt: "2026-11-09T18:00:00.000Z",
     completed: false,
     origin: "local",
@@ -289,7 +300,8 @@ Todas las tareas utilizan la misma estructura, independientemente de si fueron c
 | Propiedad | Descripción |
 |---|---|
 | `id` | Identificador interno generado por la aplicación mediante `crypto.randomUUID()` o un valor alternativo. |
-| `title` | Título de la tarea. Se eliminan los espacios sobrantes al inicio y al final. |
+| `title` | Título de la tarea. No puede estar vacío. |
+| `description` | Descripción opcional de la tarea. Si no se proporciona, se guarda como una cadena vacía. |
 | `createdAt` | Fecha y hora de registro en formato ISO. |
 | `completed` | Indica si la tarea está completada (`true`) o pendiente (`false`). |
 | `origin` | Identifica si la tarea es `local` o `api`. |
@@ -299,6 +311,7 @@ Todas las tareas utilizan la misma estructura, independientemente de si fueron c
 
 - Las tareas se guardan como JSON bajo la clave `proyecto-tareas-v1`.
 - Al iniciar, `loadTasks()` recupera y valida la información almacenada.
+- Las tareas guardadas antes de agregar `description` se conservan; al cargarlas, el servicio incorpora la propiedad con una cadena vacía.
 - Cada operación que modifica las tareas intenta guardar el nuevo arreglo.
 - Si el almacenamiento falla, `taskService.js` revierte el cambio y devuelve un resultado de error.
 - Los componentes no acceden directamente al almacenamiento; toda la persistencia se gestiona desde `taskService.js`.
@@ -324,26 +337,29 @@ El proceso de importación funciona así:
 7. `taskService.js` incorpora las tareas y omite las que ya existían para evitar duplicados.
 8. La lista, el progreso y los identificadores importados se actualizan.
 
+### Descripciones de tareas importadas
+
+El recurso `/todos` de JSONPlaceholder proporciona datos como el identificador, el título y el estado de cada tarea, pero no incluye un campo de descripción. Por ello, las tareas importadas se guardan con `description: ''`. Al abrir su vista de detalles, la aplicación informa que la API no proporciona una descripción.
+
 ### Manejo de errores
 
 Si la consulta no puede completarse, el modal muestra el mensaje recibido del servicio y ofrece el botón **Reintentar**. La aplicación sigue permitiendo trabajar con las tareas que ya están guardadas y crear nuevas tareas locales.
-
-La consulta comprueba errores HTTP, errores de red o lectura de la respuesta y que el contenido recibido sea un arreglo. No implementa un tiempo máximo de espera personalizado.
 
 ---
 
 ## Experiencia de usuario y accesibilidad
 
 - La interfaz muestra mensajes cuando no existen tareas o cuando una búsqueda no devuelve coincidencias.
-- El formulario utiliza un elemento `<dialog>`, etiquetas asociadas a los campos y mensajes de validación para el título.
-- El modal de importación utiliza `role="dialog"`, `aria-modal="true"` y `aria-labelledby`.
+- El formulario y la vista de detalles utilizan el elemento `<dialog>` y permiten cerrar la ventana con sus controles, pulsando `Esc` o haciendo clic fuera de ella.
+- El formulario utiliza etiquetas asociadas a los campos y mensajes de validación para el título.
+- La vista de detalles presenta la información en modo de solo lectura; no modifica los datos de la tarea.
 - El buscador y el filtro tienen etiquetas accesibles mediante `aria-label`.
 - Los botones de acción de cada tarea incluyen nombres accesibles (`aria-label`) descriptivos.
 - Los mensajes de operación se muestran en una región con `aria-live="polite"`.
 - Los elementos interactivos cuentan con estilos de foco visible.
 - Las acciones de eliminación y vaciado solicitan confirmación antes de ejecutarse.
-- El modal de formulario enfoca el campo de título al abrirse y devuelve el foco al elemento que lo abrió al cerrarse. El modal de importación enfoca su buscador al abrirse y se puede cerrar con `Esc`, el botón de cerrar, cancelar o al pulsar fuera del cuadro.
-- Los títulos de las tareas se insertan mediante `textContent` en los componentes, en lugar de interpretarse como HTML.
+- Los modales de formulario y detalles devuelven el foco al elemento que los abrió al cerrarse.
+- Los títulos y las descripciones de las tareas se insertan mediante `textContent`, en lugar de interpretarse como HTML.
 
 ---
 
@@ -353,11 +369,12 @@ La interfaz se adapta al ancho disponible mediante media queries:
 
 | Ancho de pantalla | Adaptación |
 |---|---|
-| **Escritorio (más de 900 px)** | Las tareas se presentan en formato de tabla con columnas para título, fecha, estado, origen y acciones. |
+| **Escritorio (más de 900 px)** | Las tareas se presentan en formato de tabla con columnas para título, fecha de registro, estado, origen y acciones. |
 | **Tablet y móvil (hasta 900 px)** | La lista cambia a tarjetas. Las acciones se muestran mediante botones de icono y los controles principales se reorganizan. |
 | **Teléfonos pequeños (hasta 380 px)** | Se ajustan los espacios y la distribución de los controles para evitar que se compriman. |
-| **Modal de formulario (hasta 480 px)** | Los botones del formulario se apilan verticalmente. |
-| **Modal de importación (hasta 600 px)** | Se reducen los espacios internos y los botones se reorganizan para pantallas estrechas. |
+| **Modales (hasta 480 px)** | Los espacios internos y los botones se adaptan a pantallas estrechas. |
+
+En pantallas pequeñas, los botones de acción de cada tarea muestran sus iconos para aprovechar mejor el espacio disponible.
 
 ---
 
@@ -382,12 +399,16 @@ La carpeta `wireframes/evidencia_dibujo/` conserva las imágenes de los bocetos 
 
 ## Pruebas funcionales
 
-Durante la revisión de la aplicación se verificaron manualmente los siguientes comportamientos:
+Durante la revisión de la aplicación se comprobaron manualmente los siguientes comportamientos:
 
 | Prueba | Comportamiento esperado |
 |---|---|
-| Crear una tarea local | Se agrega a la lista y queda almacenada. |
-| Editar una tarea local | Se actualiza el título o el estado y se conserva la fecha de registro. |
+| Crear una tarea local con descripción | Se agrega a la lista y se guardan el título y la descripción. |
+| Crear una tarea sin descripción | Se guarda correctamente con una descripción vacía. |
+| Editar una tarea local | Se pueden modificar el título y la descripción; la fecha de registro se conserva. |
+| Consultar detalles | El modal muestra título, descripción, fecha, estado y origen. |
+| Recargar la página | Las tareas y sus descripciones permanecen guardadas. |
+| Cargar tareas antiguas | Las tareas anteriores al campo `description` se conservan y se muestran con una descripción vacía. |
 | Completar y reabrir una tarea | La casilla y la etiqueta de estado reflejan el cambio. |
 | Buscar y filtrar | La lista muestra las tareas que coinciden con el texto y el estado seleccionados. |
 | Marcar todas | Se completan las tareas locales pendientes, sin modificar las importadas. |
@@ -395,8 +416,8 @@ Durante la revisión de la aplicación se verificaron manualmente los siguientes
 | Vaciar la lista | Solicita confirmación y elimina las tareas locales e importadas. |
 | Importar varias tareas | Las tareas seleccionadas se agregan con origen API. |
 | Importar una tarea repetida | No se duplica y se identifica como ya importada en el modal. |
+| Consultar una tarea importada | Se muestran sus datos y la nota de que la API no proporciona descripción. |
 | Modificar una tarea importada | La edición y el cambio de estado no están disponibles. |
-| Recargar la página | Las tareas guardadas se recuperan desde `localStorage`. |
 | Error al consultar la API | Se informa el problema y se ofrece la opción de reintentar. |
 | Diseño responsivo | La presentación cambia entre tabla de escritorio y tarjetas en tablet y móvil. |
 
@@ -407,7 +428,8 @@ Durante la revisión de la aplicación se verificaron manualmente los siguientes
 - **Solo almacenamiento local:** las tareas se conservan en el navegador donde se creó la información; no hay sincronización en la nube.
 - **Importación como copia:** una tarea importada no se sincroniza posteriormente con JSONPlaceholder. Si los datos originales cambian, la copia guardada no se actualiza automáticamente.
 - **Conexión para importar:** se necesita internet para consultar el banco de tareas. Las funciones locales siguen disponibles con las tareas previamente guardadas.
-- **Tareas importadas de solo lectura:** no pueden editarse ni cambiar de estado, aunque sí eliminarse.
+- **Tareas importadas de solo lectura:** no pueden editarse ni cambiar de estado, aunque sí se pueden consultar y eliminar.
+- **Sin descripción en la API:** JSONPlaceholder no entrega una descripción para sus tareas; la aplicación muestra una nota aclaratoria en la vista de detalles.
 - **Sin backend:** la aplicación no utiliza servidor propio, base de datos ni autenticación.
 
 ---
@@ -421,7 +443,7 @@ El desarrollo se distribuyó en dos áreas y se integró utilizando Git y ramas 
 | **Sara Yuliana Borda Ochoa** | Gestión de tareas y listado | `taskService.js`, `filterService.js`, `task-list.js`, `task-item.js`, `task-form-modal.js` y sus estilos. |
 | **Michael Daniel Martinez Buenahora** | API e integración de la aplicación | `apiService.js`, `importService.js`, `task-app.js`, `task-import-modal.js`, `app.js`, `index.html`, `global.css` y sus estilos. |
 
-Las funciones compartidas y los eventos se coordinaron para mantener un mismo formato de tarea y una comunicación consistente entre componentes y servicios.
+Las funciones compartidas y los eventos se coordinaron para mantener un mismo formato de tarea y una comunicación consistente entre componentes y servicios. La vista de detalles y su integración se incorporaron como parte de la ampliación del proyecto.
 
 ---
 

@@ -64,8 +64,8 @@ function refreshView() {
     );
 
     const isFiltered =
-        currentFilter !== TASK_STATUS.ALL ||
-        currentSearch !== '';
+    currentFilter !== TASK_STATUS.ALL ||
+    currentSearch.trim() !== '';
 
     app.setTasks(filteredTasks, isFiltered);
     app.setSummary(allTasks);

@@ -148,7 +148,8 @@ class TaskApp extends HTMLElement {
 
             this._searchTimeout = setTimeout(() => {
 
-                this._currentSearch = searchInput.value.trim();
+                // Conservar los espacios escritos por el usuario
+                this._currentSearch = searchInput.value;
 
                 this.emitEvent(EVENTS.SEARCH, {
                     query: this._currentSearch

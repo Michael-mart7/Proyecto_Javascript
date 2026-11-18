@@ -1,4 +1,5 @@
 export const STORAGE_KEY = 'proyecto-tareas-v1';
+export const CATEGORY_STORAGE_KEY = 'proyecto-categorias-v1';
 export const API_URL = 'https://jsonplaceholder.typicode.com/todos';
  
 export const TASK_ORIGIN = {
@@ -29,5 +30,10 @@ export const EVENTS = {
     IMPORT: 'task:import',
     FILTER: 'task:filter',
     SEARCH: 'task:search',
-    API_RETRY: 'task:api-retry'
+    API_RETRY: 'task:api-retry',
+    CATEGORY_SAVE: 'category:save',
+    API_RETRY: 'task:api-retry',
+    CATEGORY_SAVE: 'category:save',
+    CATEGORY_DELETE: 'category:delete'
 };
+

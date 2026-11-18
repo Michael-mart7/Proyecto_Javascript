@@ -20,8 +20,8 @@ function isValidTask(t) {
         (typeof t.description === 'undefined' || typeof t.description === 'string') &&
         typeof t.createdAt === 'string' &&
         typeof t.completed === 'boolean' &&
-        (t.origin === TASK_ORIGIN.LOCAL || t.origin === TASK_ORIGIN.API) &&
-        (t.sourceId === null || typeof t.sourceId === 'number')
+        (t.sourceId === null || typeof t.sourceId === 'number') &&
+        (typeof t.categoryId === 'undefined' || typeof t.categoryId === 'string')
     );
 }
 
@@ -59,7 +59,8 @@ export function loadTasks() {
         if (!Array.isArray(parsed)) throw new Error('Formato inválido');
         tasks = parsed.filter(isValidTask).map((task) => ({
             ...task,
-            description: typeof task.description === 'string' ? task.description : ''
+            description: typeof task.description === 'string' ? task.description : '',
+            categoryId: typeof task.categoryId === 'string' ? task.categoryId : null
         }));
         return { ok: true, data: getTasks() };
     } catch (error) {
@@ -83,20 +84,21 @@ function cleanDescription(description) {
     return typeof description === 'string' ? description.trim() : '';
 }
 
-export function addTask({ title, description = '', completed } = {}) {
+export function addTask({ title, description = '', completed, categoryId = null } = {}) {
     const clean = cleanTitle(title);
     if (!clean) return { ok: false, message: 'El título no puede estar vacío.' };
 
     const task = createLocalTask({
         title: clean,
         description: cleanDescription(description),
-        completed: Boolean(completed)
+        completed: Boolean(completed),
+        categoryId: categoryId
     });
 
     return commit([...tasks, task], { ok: true, data: { ...task } });
 }
 
-export function updateTask(id, { title, description, completed } = {}) {
+export function updateTask(id, { title, description, completed, categoryId = null } = {}) {
     const current = tasks.find((t) => t.id === id);
     if (!current) return { ok: false, message: 'La tarea no existe.' };
 
@@ -116,7 +118,9 @@ export function updateTask(id, { title, description, completed } = {}) {
         ...current,
         title: clean,
         description: cleanDesc,
-        completed: Boolean(completed)
+        completed: Boolean(completed),
+        // Si no se pasa categoryId, se conserva el actual
+        categoryId: categoryId === undefined ? current.categoryId : categoryId
     };
 
     return commit(
@@ -201,4 +205,19 @@ export function importTasks(normalizedTasks) {
 
     if (toAdd.length === 0) return { ok: true, added: 0, skipped };
     return commit([...tasks, ...toAdd], { ok: true, added: toAdd.length, skipped });
+}
+
+
+export function removeCategoryFromTasks(categoryId) {
+    let updatedCount = 0;
+    const next = tasks.map((t) => {
+        if (t.categoryId === categoryId) {
+            updatedCount += 1;
+            return { ...t, categoryId: null };
+        }
+        return t;
+    });
+
+    if (updatedCount === 0) return { ok: true, updated: 0 };
+    return commit(next, { ok: true, updated: updatedCount });
 }

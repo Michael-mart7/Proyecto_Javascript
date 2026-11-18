@@ -144,7 +144,7 @@ class TaskDetailModal extends HTMLElement {
     open(task) {
 
         if (this.shadowRoot.childElementCount === 0) {
-            this.build();
+            this.build(); 
         }
 
         if (!task) return;

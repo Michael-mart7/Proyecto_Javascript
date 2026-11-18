@@ -19,12 +19,13 @@ export function createLocalTask({ title, description = '', completed = false }) 
         createdAt: new Date().toISOString(),
         completed: completed,
         origin: TASK_ORIGIN.LOCAL,
-        sourceId: null
+        sourceId: null,
+        categoryId: categoryId
     };
 }
 
 // Crear tarea importada
-export function createImportedTask(apiTask) {
+export function createImportedTask(apiTask, categoryId = null) {
     return {
         id: generateId(),
         title: apiTask.title,
@@ -32,6 +33,7 @@ export function createImportedTask(apiTask) {
         createdAt: new Date().toISOString(),
         completed: apiTask.completed,
         origin: TASK_ORIGIN.API,
-        sourceId: apiTask.id
+        sourceId: apiTask.id,
+        categoryId: categoryId
     };
 }

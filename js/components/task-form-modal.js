@@ -33,6 +33,7 @@ class TaskFormModal extends HTMLElement {
         this.attachShadow({ mode: 'open' });
         this._task = null;
         this._opener = null;
+        this._categories = [];
     }
 
     connectedCallback() {
@@ -71,6 +72,11 @@ class TaskFormModal extends HTMLElement {
                     </div>
 
                     <div class="campo">
+                        <div class="campo">
+                            <label> for="categoria">Categoría</label>
+                            <select id="categoria" name="categoria">
+                            <p class="ayuda">Opcional. puedes crear una nueva categoría en el boton de "categorias".</p>
+                        </div>
                         <label for="fecha">Fecha de registro</label>
                         <div class="con-icono">
                             <input type="text" id="fecha" readonly aria-describedby="ayuda-fecha">
@@ -123,6 +129,32 @@ class TaskFormModal extends HTMLElement {
         // Al escribir, se quita el mensaje de error
         root.getElementById('titulo').addEventListener('input', () => this.showError(''));
     }
+    
+    setCategories(categories) {
+        this._categories = Array.isArray(categories) ? categories : [];
+        if (this.shadowRoot.childElementCount === 0) this.build();
+        this.fillCategories(this.shadowRoot.getElementById('categoria').value);
+    }
+    
+    fillCategories(selectedId = '') {
+        const select = this.shadowRoot.getElementById('categoria');
+        select.innerHTML = '';
+
+        const none = document.createElement('option');
+        none.value = '';
+        none.textContent = 'Sin categoría';
+        select.appendChild(none);
+
+        for (const category of this._categories) {
+            const option = document.createElement('option');
+            option.value = category.id;
+            option.textContent = category.name;
+            select.appendChild(option);
+        }
+
+        // Si la categoría ya no existe, queda en "Sin categoría"
+        select.value = this._categories.some((c) => c.id === selectedId) ? selectedId : '';
+    }
 
     // Abre el formulario vacío (tarea nueva) o con los datos de la tarea (edición)
     open(task = null) {
@@ -145,6 +177,7 @@ class TaskFormModal extends HTMLElement {
         root.getElementById('titulo').value = task ? task.title : '';
         root.getElementById('descripcion').value = task ? (task.description || '') : '';
         root.getElementById('completada').checked = task ? task.completed : false;
+        this.fillCategories(task ? task.categoryId || '' : '');
         root.getElementById('fecha').value = formatDate(task ? task.createdAt : new Date().toISOString());
         this.showError('');
 

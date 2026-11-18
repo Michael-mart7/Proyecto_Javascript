@@ -1,0 +1,197 @@
+/* Estilos internos de <category-manager-modal>. Viven dentro del Shadow DOM. */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box; /* global.css no atraviesa el Shadow DOM */
+}
+
+:host {
+    --suave: #566175;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+dialog {
+    width: min(520px, calc(100vw - 2rem));
+    max-height: 90vh;
+    padding: 0;
+    border: 0;
+    border-radius: var(--radio, 10px);
+    background: var(--color-superficie, #ffffff);
+    color: var(--color-texto, #293141);
+    box-shadow: 0 20px 50px rgba(41, 49, 65, 0.25);
+    font-family: inherit;
+}
+
+dialog[open] {
+    display: flex;
+    flex-direction: column;
+}
+
+dialog::backdrop {
+    background: rgba(41, 49, 65, 0.5);
+}
+
+.encabezado {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.5rem 1.5rem 0;
+}
+
+h2 {
+    margin: 0;
+    font-size: 1.4rem;
+}
+
+.subtitulo {
+    margin: 0.3rem 0 0;
+    color: var(--suave);
+    font-size: 0.9rem;
+}
+
+.cerrar {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    margin: -0.5rem -0.5rem 0 0;
+    border: 0;
+    border-radius: var(--radio, 10px);
+    background: none;
+    color: var(--suave);
+    cursor: pointer;
+}
+
+/* Crear */
+.nueva {
+    padding: 1.1rem 1.5rem 0;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-size: 0.9rem;
+}
+
+.fila-nueva {
+    display: flex;
+    gap: 0.5rem;
+}
+
+input[type='text'] {
+    flex: 1;
+    min-width: 0;
+    min-height: 44px;
+    padding: 0 0.9rem;
+    border: 1px solid var(--color-borde, #dce2ea);
+    border-radius: var(--radio, 10px);
+    background: var(--color-superficie, #ffffff);
+    color: inherit;
+    font: inherit;
+}
+
+input[type='text']:focus {
+    border-color: var(--color-primario, #5369df);
+    outline: 2px solid var(--color-primario, #5369df);
+    outline-offset: 0;
+}
+
+.error {
+    margin: 0.4rem 0 0;
+    color: #b91c1c;
+    font-size: 0.85rem;
+}
+
+/* Lista */
+.lista {
+    flex: 1;
+    margin: 1rem 0 0;
+    padding: 0 1.5rem;
+    list-style: none;
+    overflow-y: auto;
+}
+
+.categoria {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    min-height: 52px;
+    border-bottom: 1px solid var(--color-borde, #dce2ea);
+}
+
+.nombre {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.edicion {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.4rem 0;
+}
+
+.vacio {
+    margin: 1rem 1.5rem 0;
+    color: var(--suave);
+    font-size: 0.9rem;
+}
+
+/* Botones */
+.boton,
+.accion {
+    min-height: 44px;
+    padding: 0 0.9rem;
+    border: 0;
+    border-radius: var(--radio, 10px);
+    background: none;
+    font: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.boton.guardar,
+.accion.guardar-edicion {
+    background: var(--color-primario, #5369df);
+    color: #ffffff;
+}
+
+.accion.editar {
+    color: var(--color-primario, #5369df);
+}
+
+.accion.eliminar {
+    color: #b91c1c;
+}
+
+.accion.cancelar,
+.boton.cerrar-final {
+    color: var(--suave);
+}
+
+.pie {
+    display: flex;
+    justify-content: flex-end;
+    padding: 1rem 1.5rem 1.5rem;
+}
+
+.cerrar:focus-visible,
+.boton:focus-visible,
+.accion:focus-visible {
+    outline: 2px solid var(--color-primario, #5369df);
+    outline-offset: 2px;
+}
+
+@media (max-width: 480px) {
+    .fila-nueva {
+        flex-direction: column;
+    }
+}
